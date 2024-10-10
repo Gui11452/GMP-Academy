@@ -1,5 +1,13 @@
 ## Plataforma de Questões
 
+## 🛠 Habilidades
+- Django
+- Python
+- SQL e Banco de Dados
+- Javascript, HTML, CSS
+- ASAAS -> Pagamento
+
+## Funcionalidades
 - Área Administrativa
 - Cadastro de questões
 - Cadastro/Filtro de questões com gabarito
