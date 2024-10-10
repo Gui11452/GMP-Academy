@@ -1,4 +1,4 @@
-## Plataforma com Ferramentas de Inteligência Artificial
+## Plataforma de Cursos
 
 - Área Administrativa
 - Cadastro de questões
