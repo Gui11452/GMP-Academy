@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/alterar_dados.css' %}">
+{% endblock %}
+{% block titulo %}
+Alterar Dados - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-alterar_dados">
+    <div>
+        <div class="alterar_dados">
+            <h1>
+                <i class="fa-solid fa-user"></i>
+                Alterando dados de: {{request.user}}
+            </h1>
+            <small>
+                O usuário tem que ter no mínimo 4 caracteres!
+            </small>
+            <small>
+                As senhas precisam ser iguais!
+            </small>
+            <form action="{% url 'alterar_dados' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+
+                <label for="name">Nome completo:</label>
+                <input type="text" name="name" id="name" value="{{request.user.first_name}}" required>
+                <small class="name-errors"></small>
+
+                <label for="user">Usuário:</label>
+                <input type="text" name="user" id="user" value="{{request.user}}" required>
+                <small class="user-errors"></small>
+
+                <label for="email">E-mail:</label>
+                <input type="email" name="email" id="email" value="{{request.user.email}}" required>
+                <small class="email-errors"></small>
+                
+                {% if perfil.foto %}
+                    <label for="foto">Trocar Foto:</label>
+                    <input type="file" name="foto" id="foto">
+                {% else %}
+                    <label for="foto">Foto:</label>
+                    <input type="file" name="foto" id="foto">
+                {% endif %}
+                
+                {% if perfil.foto %}
+                    <label for="foto">Você tem uma foto existente. Deseja excluir a foto?</label>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            Sim
+                            <input type="radio" name="excluir_foto" value="Sim">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            Não
+                            <input type="radio" name="excluir_foto" value="Nao">
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+
+                <input type="submit" id="submit" value="Trocar Dados">
+                <span class="loader"></span>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const loader = document.querySelector('.loader');
+    const buttonSubmit = document.querySelector('#submit');
+    document.addEventListener('submit', e => {
+        buttonSubmit.style.display = 'none';
+        loader.style.display = 'inline-block';
+
+    });
+</script>
+<script src="{% static 'js/altera_dados.js' %}"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

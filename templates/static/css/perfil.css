@@ -1,0 +1,622 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    outline: none;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+html{
+    font-size: 62.5%;
+    font-family: var(--fonte) !important;
+}
+
+body{
+    font-size: 1.5rem;
+}
+
+:root{
+    --cor-branco: #fff;
+    --cor-preto: black;
+    --cor-principal: #19476b;
+    --cor-secundaria: #1e1a1b;
+    --linear-gradient-fundo: linear-gradient(90deg, rgba(255,255,255,1) 31%, rgba(204,204,204,1) 71%);
+    --fonte: 'Montserrat', sans-serif;
+}
+
+.sucesso, .erro, .info{
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+.sucesso{
+    color: var(--cor-preto);
+    background: #2ff15d;
+}
+
+.erro{
+    color: var(--cor-branco);
+    background: #e71717;
+}
+
+.info{
+    color: var(--cor-preto);
+    background: #0aa2e9;
+}
+
+/* Cabeçalho - Início */
+
+.cabecalho{
+    background: var(--cor-principal);
+    padding: 2rem 0;
+}
+
+.cabecalho-menu{
+    background: var(--cor-preto);
+    padding: 2rem 0;
+}
+
+.cabecalho-menu>nav{
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+.cabecalho-menu>nav a{
+    color: var(--cor-branco);
+    transition: .3s;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 0.5rem;
+}
+
+.cabecalho-menu>nav span{
+    width: 0%;
+    height: 0.3rem;
+    background: var(--cor-branco);
+    display: inline-block;
+    border-radius: 1rem;
+    transition: .3s;
+}
+
+.cabecalho-menu>nav a:hover span{
+    width: 100%;
+}
+
+.cabecalho-menu>nav a:hover{
+    transform: scale(1.05);
+}
+
+.cabecalho>div{
+    margin: 0 auto;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cabecalho div.info-user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cabecalho .info-user a{
+    padding: 1rem 3rem;
+    border-radius: 1rem;
+    background: var(--cor-branco);
+    color: var(--cor-principal);
+    font-weight: bold;
+    transition: .3s;
+}
+
+.cabecalho .info-user img{
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    margin-left: 1rem;
+}
+
+.cabecalho .info-user a:hover{
+    transform: scale(1.05);
+}
+
+.cabecalho>div>div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.logo{
+    color: var(--cor-branco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.logo img{
+    max-width: 5rem;
+}
+
+.cabecalho .menu{
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    font-weight: bold;
+    color: var(--cor-branco);
+    cursor: pointer;
+    transition: .3s;
+    position: relative;
+}
+
+.cabecalho .menu:hover{
+    transform: scale(1.05);
+}
+
+.cabecalho .menu>div:nth-child(1){
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.cabecalho .menu div:nth-child(1) span{
+    height: 0.3rem;
+    width: 100%;
+    background: var(--cor-branco);
+    display: inline-block;
+}
+
+.dropdown{
+    position: absolute;
+    top: 3.5rem;
+    background: var(--cor-principal);
+    padding: 2rem;
+    display: none;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 20rem;
+}
+
+.cabecalho .menu:hover .dropdown{
+    display: flex;
+}
+
+.dropdown a{
+    color: var(--cor-branco);
+    font-weight: bold;
+    text-align: center;
+    transition: .3s;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.dropdown a span{
+    width: 0%;
+    display: inline-block;
+    background: var(--cor-branco);
+    border-radius: 1rem;
+    height: .3rem;
+    transition: .3s;
+}
+
+.dropdown a:hover{
+    transform: scale(1.05);
+}
+
+.dropdown a:hover span{
+    width: 100%;
+}
+
+/* Cabeçalho - Fim */
+
+/* Container Home - Início */
+
+.container-perfil{
+    width: 100%;
+    /* background: url('../images/fundo.jpg') center center;
+    background-size: cover; */
+    background: var(--cor-branco);
+}
+
+.container-perfil small{
+    font-weight: bold;
+}
+
+.container-perfil>div{
+    padding: 3rem;
+    width: 100%;
+    min-height: 80vh;
+    /* background: rgba(0, 0, 0, 0.4); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.perfil{
+    padding: 2rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+    min-width: 50rem;
+    border-radius: 2rem;
+    background: var(--linear-gradient-fundo);
+    border: 0.2rem solid var(--cor-preto);
+    gap: 1rem;
+}
+
+.perfil img{
+    max-width: 2rem;
+}
+
+.perfil h2 img{
+    max-width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.perfil h2{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.perfil>img{
+   max-width: 10rem;
+}
+
+.perfil p{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.perfil a, .perfil input:last-child{
+    transition: .3s;
+    color: var(--cor-branco);
+    font-weight: bold;
+    padding: 1rem 2rem;
+    background: var(--cor-principal);
+    border-radius: 10rem;
+    border: none;
+    font-family: var(--fonte);
+    cursor: pointer;
+}
+
+.perfil a:hover, .perfil input:last-child:hover{
+    transform: scale(1.05);
+}
+
+.metricas-disciplina{
+    margin: 1rem 0;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+}
+
+/* Métricas - Início */
+
+.form-filtro {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-filtro>div {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.filtros_selecionados>div {
+    display: none;
+    gap: 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    align-items: center;
+    background: var(--cor-preto);
+    color: var(--cor-branco);
+    box-shadow: 0.2rem 0.2rem 2rem var(--cor-preto);
+    font-weight: bold;
+    text-align: center;
+}
+
+.filtros_selecionados>div i {
+    cursor: pointer;
+}
+
+.filtros_selecionados span {
+    background: var(--cor-branco);
+    color: var(--cor-preto);
+    padding: 0.4rem;
+}
+
+.form-filtro>div>input {
+    border: 0.2rem solid var(--cor-principal);
+    padding: 1rem;
+    border-radius: 2rem;
+    font-family: var(--fonte);
+    transition: .3s;
+}
+
+.form-filtro input:focus {
+    transform: scale(1.01);
+}
+
+.form-filtro>div>span {
+    background: var(--cor-principal);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    color: var(--cor-branco);
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown-button {
+    position: absolute;
+    top: 4.5rem;
+    width: 20rem;
+    background: var(--cor-branco);
+    box-shadow: 0.2rem 0.2rem 2rem var(--cor-preto);
+    display: none;
+}
+
+div.dropdown-button-desocultar {
+    display: block;
+}
+
+.dropdown-button>input {
+    width: 20rem;
+    padding: 1rem;
+    border: 0.2rem solid var(--cor-principal);
+    transition: .3s;
+    font-family: var(--fonte);
+}
+
+.dropdown-button>input:focus {
+    transform: scale(1.01);
+}
+
+.dropdown-button div {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: center;
+    height: 25rem;
+    overflow: scroll;
+}
+
+.dropdown-button h4 {
+    color: var(--cor-preto);
+    text-align: center;
+    margin: 1rem 0;
+    display: none;
+}
+
+.dropdown-button label {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    align-items: center;
+    color: var(--cor-preto);
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-bottom: 0.2rem solid var(--cor-principal);
+}
+
+.metricas{
+    margin-top: 3rem;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+}
+
+/* Container Métricas - Fim */
+
+/* Container Home - Fim */
+
+/* Container Rodapé - Início */
+
+.container-rodape{
+    width: 100%;
+    border-top: 0.2rem solid var(--cor-branco);
+}
+
+.container-rodape>div{
+    width: 100%;
+    padding: 2rem 0;
+    margin: 0 auto;
+    display: flex;
+    min-height: 55vh;
+    justify-content: flex-end;
+    align-items: center;
+    flex-flow: column nowrap;
+    background: var(--cor-secundaria);
+}
+
+.rodape{
+    /* background: var(--cor-terciaria); */
+    /* background: rgba(247, 247, 247, 0.6); */
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 2rem;
+    /* border: 1px solid blue; */
+    font-family: var(--fonte-paragrafos);
+}
+
+.rodape>div{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.rodape>div>p{
+    max-width: 50rem;
+    color: var(--cor-branco);
+    letter-spacing: 0.1rem;
+    /* font-weight: bold; */
+}
+
+.rodape ul{
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 1rem;
+}
+
+.rodape ul a{
+    color: var(--cor-branco);
+    transition: .3s;
+}
+
+.rodape ul h2{
+    color: var(--cor-principal);
+}
+
+.rodape ul a:hover{
+    text-decoration: underline;
+}
+
+.rodape strong{
+    color: var(--cor-principal);
+    font-family: var(--fonte-titulos);
+    font-size: 2rem;
+}
+
+.rodape .logo{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.rodape-imagens{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    width: 100%;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.rodape-imagens img{
+    width: 30rem;
+}
+
+.rodape-imagens a:nth-child(1) img, .rodape-imagens a:nth-child(2) img{
+    width: 5rem;
+}
+
+.rodape-imagens a{
+    transition: .3s;
+}
+
+.rodape-imagens a:hover{
+    transform: scale(1.05);
+}
+
+.rodape-imagens a:nth-child(3) img{
+    width: 10rem;
+}
+
+.rodape-copyright{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+    flex-flow: column nowrap;
+}
+
+.rodape-copyright>div{
+    width: 100%;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid red; */
+    flex-flow: row wrap;
+    font-weight: bold;
+    font-family: var(--fonte-paragrafos);
+    color: var(--cor-branco);
+    gap: 2rem;
+}
+
+.rodape-copyright a{
+    color: var(--cor-branco);
+    transition: .3s;
+    display: inline-block;
+}
+
+.rodape-copyright a:hover{
+    transform: scale(1.05);
+}
+
+/* Container Rodapé - Fim */
+
+@media(max-width: 510px){
+    .cabecalho>div{
+        flex-flow: row wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .dropdown{
+        top: 3.5rem;
+        left: -10rem;
+        width: 20rem;
+    }
+
+}
+
+@media(max-width: 555px){
+    .rodape>div{
+        flex-flow: row wrap;
+        justify-content: flex-start;
+    }
+
+    .perfil{
+        width: 100%;
+        min-width: 0rem;
+    }
+}
+
+@media(max-width: 320px){
+    html{
+        font-size: 50%;
+    }
+}

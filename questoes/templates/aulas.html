@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/aulas.css' %}">
+{% endblock %}
+{% block titulo %}
+Aulas - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-aulas">
+    <div>
+        <h1>
+            <img src="{% static 'images/aula.png' %}" alt="Aulas - GMP Academy">
+            Aulas
+        </h1>
+        {% include 'parciais/_messages.html' %}
+        <form method="GET" action="{% url 'aulas' %}" class="form-filtro">
+            {% if not pedido or not pedido.plano_ativo %}
+            <div class="info">
+                Você tem acesso a 1 aula gratuita, aproveite! Contrate um plano para acessar o nosso vasto banco de
+                aulas.
+            </div>
+            {% endif %}
+            <div>
+                <input type="text" name="palavra_chave" id="palavra_chave" placeholder="Palavra Chave">
+                <span class="button-disciplina">
+                    Disciplina
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for disciplina in choices_disciplinas %}
+                            <label>
+                                <input type="checkbox" name="disciplina" value="{{disciplina.nome}}">
+                                <span>
+                                    {{disciplina.nome}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+                        </div>
+                    </div>
+                </span>
+            </div>
+            <div class="filtros_selecionados">
+                <h3>
+                    Filtrar por:
+                </h3>
+                <p> Os seus filtros aparecerão aqui </p>
+                <div class="filtro_palavra_chave">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                    <p>
+                        Palavra Chave
+                    </p>
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+            <input type="submit" value="Filtrar Aulas">
+
+        </form>
+        {% if aulas and request.GET %}
+            <div class="aulas">
+                <span></span>
+                <h3>
+                    {{qtd|plural_aulas}}
+                </h3>
+                <p style="font-weight: bold;">
+                    {% if not request.GET.pag %}
+                        (Página atual: 1 de {{page_obj.paginator.num_pages}})
+                    {% else %}
+                        (Página atual: {{request.GET.pag}} de {{page_obj.paginator.num_pages}})
+                    {% endif %}
+                </p>
+                {% for aula in page_obj %}
+                <div>
+                    <div class="aula">
+                        <div>
+                            <p>
+                                <strong>
+                                    Disciplina:
+                                </strong>
+                                {{aula.disciplina}}
+                            </p>
+                            <p>
+                                {{aula.nome}}
+                            </p>
+                        </div>
+
+                        <iframe id="panda-b4e1ced8-3500-4e41-a49c-357a2ea7d0da" 
+                        src="{{aula.video}}" style="border:none;" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" 
+                        allowfullscreen=true fetchpriority="high"></iframe>
+
+                        <p>
+                            {{aula.descricao}}
+                        </p>
+                        
+                        {% if aula.pdf %}
+                            <a href="{{aula.pdf.url}}" target="_blank">
+                                Abrir 
+                                PDF
+                            </a>
+                        {% endif %}
+
+                    </div>
+                    <span></span>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+        <h3>
+            Nenhuma aula foi encontrada!
+        </h3>
+        {% endif %}
+        {% include 'parciais/_pagination.html' %}
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/aulas.js' %}"></script>
+{% endblock %}

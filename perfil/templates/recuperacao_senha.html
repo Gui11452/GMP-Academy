@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+{% endblock %}
+{% block titulo %}
+Registro - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-registro">
+    <div>
+        <div class="registro">
+            <h1>
+                <i class="fa-solid fa-user"></i>
+                Trocar a Senha de: {{usuario}}
+            </h1>
+            <small>
+                A senha tem que ter no mínimo 8 caracteres!
+            </small>
+            <small>
+                As senhas precisam ser iguais!
+            </small>
+            <form action="{% url 'recuperacao_senha' codigo %}" method="POST">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+
+                <label for="senha1">Senha:</label>
+                <input type="password" name="senha1" id="senha1" required>
+                <small class="senha1-errors"></small>
+
+                <label for="senha2">Repetir senha:</label>
+                <input type="password" name="senha2" id="senha2" required>
+                <small class="senha2-errors"></small>
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+
+                <input type="submit" id="submit" value="Trocar Senha">
+                <span class="loader"></span>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/recuperacao_senha.js' %}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

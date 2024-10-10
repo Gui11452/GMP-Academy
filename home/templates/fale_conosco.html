@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/fale_conosco.css' %}">
+{% endblock %}
+{% block titulo %}
+    Fale Conosco - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-fale-conosco">
+    <div>
+        <div class="fale-conosco">
+            <h1>
+                Fale Conosco
+            </h1>
+
+            <form action="{% url 'fale_conosco' %}" method="POST">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+                <label for="titulo">Título:</label>
+                <input type="text" name="titulo" id="titulo" value="{{request.POST.titulo}}" required>
+
+                <label for="assunto">Assunto:</label>
+                <input type="text" name="assunto" id="assunto" value="{{request.POST.assunto}}" required>
+
+                <label for="texto">Texto:</label>
+                <textarea name="texto" id="texto" cols="40" rows="10" value="{{request.POST.assunto}}"
+                    required></textarea>
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+                <input type="submit" id="submit" value="Enviar">
+                <span class="loader"></span>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const loader = document.querySelector('.loader');
+    const buttonSubmit = document.querySelector('#submit');
+    document.addEventListener('submit', e => {
+        buttonSubmit.style.display = 'none';
+        loader.style.display = 'inline-block';
+
+    });
+</script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

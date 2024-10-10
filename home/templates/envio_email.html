@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/fale_conosco.css' %}">
+{% endblock %}
+{% block titulo %}
+GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-fale-conosco">
+    <div>
+        <div class="fale-conosco">
+            <h1>
+                Envio de e-mails
+            </h1>
+            
+            {% if emails_prontos %}
+                <form action="{% url 'envio_emails' %}" method="POST">
+                    {% csrf_token %}
+                    {% include 'parciais/_messages.html' %}
+
+                    {% for email in emails_prontos %}
+
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <input type="radio" name="email_id" id="{{email.id}}" value="{{email.id}}" required>
+                            <label for="{{email.id}}">{{email.titulo}}</label>
+                        </div>
+
+                    {% endfor %}
+
+                    <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+                    <input type="submit" id="submit" value="Enviar">
+                    <span class="loader"></span>
+                </form>
+            {% else %}
+                <h2>
+                    Não tem nenhum e-mail personalizado cadastrado!
+                </h2>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const loader = document.querySelector('.loader');
+    const buttonSubmit = document.querySelector('#submit');
+    document.addEventListener('submit', e => {
+        buttonSubmit.style.display = 'none';
+        loader.style.display = 'inline-block';
+
+    });
+</script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

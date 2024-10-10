@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quem_somos.css' %}">
+{% endblock %}
+{% block titulo %}
+    Quem Somos - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-topicos">
+    <div>
+        <h1>
+            {{sobre_nos.titulo}}
+        </h1>
+
+        {% if sobre_nos.foto %}
+            <video controls controlsList="nodownload" poster="{{sobre_nos.foto.url}}">
+        {% else %}
+            <video controls controlsList="nodownload">
+        {% endif %}
+            <source src="{{sobre_nos.video.url}}">
+            Seu navegador não suporta a tag de vídeo.
+        </video>
+
+        <div class="quem-somos">
+            <div>
+                {{sobre_nos.texto|safe}}
+            </div>
+        </div>
+        <h2>
+            Como o <span>
+                GMP Academy
+            </span> vai te ajudar?
+        </h2>
+        <div class="topicos">
+            <div class="topico">
+                <h3>
+                    Muitas Questões
+                </h3>
+                <p>
+                    Maximize seu sucesso nos concursos! A GMP Academy tem uma
+                    vasta gama de questões e gabaritos. Treine eficientemente,
+                    identifique pontos fracos e alcance a excelência. O caminho para a
+                    aprovação começa aqui!
+                </p>
+                <a href="{% url 'planos' %}">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+            <div class="topico">
+                <h3>
+                    Filtros Inteligentes
+                </h3>
+                <p>
+                    Otimize seu estudo com nosso site de questões para concursos.
+                    Filtros inteligentes personalizam sua prática, focando em áreas-chave.
+                    Eficiência, precisão e sucesso garantidos em cada teste!
+                </p>
+                <a href="{% url 'planos' %}">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+            <div class="topico">
+                <h3>
+                    Organização de Tempo
+                </h3>
+                <p>
+                    Economize tempo, estude com eficácia! Nosso site de questões para concursos
+                    oferece organização perfeita, permitindo um planejamento preciso para
+                    maximizar seus estudos e alcançar o sucesso desejado.
+                </p>
+                <a href="{% url 'planos' %}">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}

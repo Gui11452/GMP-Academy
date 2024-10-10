@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/payment.css' %}">
+{% endblock %}
+{% block titulo %}
+    Área de Pagamento - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-payment">
+    <div>
+        <div class="payment">
+            {% if request.session.plano %}
+                <h1>
+                    <i class="fa-solid fa-user"></i>
+                    Olá {{request.user}}, você escolheu o plano {{request.session.plano|formata_plano2}}
+                </h1>
+            {% else %}
+                <h1>
+                    <i class="fa-solid fa-user"></i>
+                    Olá {{request.user}}, você ainda não escolheu nenhum plano
+                </h1>
+            {% endif %}
+            <form action="{% url 'payment' %}" method="POST">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+                {% if request.session.plano %}
+                    <input type="hidden" id="input-hidden" value="{{request.session.plano}}">
+                    <h3>
+                        Deseja trocar de plano?
+                    </h3>
+                {% else %}
+                    <h3>
+                        Escolha um plano:
+                    </h3>
+                {% endif %}
+                <div>
+                    {% for plano in planos %}
+                        {% if plano.tipo == 'basico' %}
+                            <label>
+                                Básico ({{plano.preco|formata_preco_mensal}})
+                                <input type="radio" name="plano" id="plano-basico" value="basico">
+                            </label>
+                            /
+                        {% elif plano.tipo == 'intermediario' %}
+                            <label>
+                                Intermediário ({{plano.preco|formata_preco_mensal}})
+                                <input type="radio" name="plano" id="plano-intermediario" value="intermediario">
+                            </label>
+                            /
+                        {% else %}
+                            <label>
+                                Avançado ({{plano.preco|formata_preco_mensal}})
+                                <input type="radio" name="plano" id="plano-avancado" value="avancado">
+                            </label>
+                            /
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <span class="loader"></span>
+                <input type="submit" id="submit" value="Ir para a área de pagamento">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+        const loader = document.querySelector('.loader');
+        const buttonSubmit = document.querySelector('#submit');
+        document.addEventListener('submit', e => {
+            buttonSubmit.style.display = 'none';
+            loader.style.display = 'inline-block';
+
+        });
+
+        const planoBasico = document.querySelector('#plano-basico');
+        const planoIntermediario = document.querySelector('#plano-intermediario');
+        const planoAvancado = document.querySelector('#plano-avancado');
+        const inputHidden = document.querySelector('#input-hidden');
+
+        if(inputHidden.value == 'basico'){
+            planoBasico.checked = true;
+        } else if(inputHidden.value == 'intermediario'){
+            planoIntermediario.checked = true;
+        } else if(inputHidden.value == 'avancado'){
+            planoAvancado.checked = true;
+        }
+
+    </script>
+{% endblock %}

@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/questoes.css' %}">
+{% endblock %}
+{% block titulo %}
+Questões - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-questoes">
+    <div>
+        <h1>
+            <img src="{% static 'images/questoes.png' %}" alt="Questões - GMP Academy">
+            Questões
+        </h1>
+        <!-- {% include 'parciais/_messages.html' %} -->
+        <form method="GET" action="{% url 'questoes' %}" class="form-filtro">
+            {% if not pedido or not pedido.plano_ativo %}
+            <div class="info">
+                Você tem acesso a 10 questões gratuitas, aproveite! Contrate um plano para acessar o nosso vasto banco
+                de questões.
+            </div>
+            {% endif %}
+            <div class="acerto_questoes">
+                <h3>
+                    Questões:
+                </h3>
+                {% for resposta in choices_respostas %}
+                <label for="{{resposta}}">
+                    {{resposta}}
+                </label>
+                <input type="radio" name="acerto_questao" id="{{resposta}}" value="{{resposta}}">
+                {% endfor %}
+
+                <label for="Todas" class="selecionado">
+                    Todas
+                </label>
+                <input type="radio" name="acerto_questao" id="Todas" value="Todas" checked="True">
+
+            </div>
+            <div>
+                <input type="text" name="palavra_chave" id="palavra_chave" placeholder="Palavra Chave">
+                <span class="button-disciplina">
+                    Disciplina
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for disciplina in choices_disciplinas %}
+                            <label>
+                                <input type="checkbox" name="disciplina" value="{{disciplina.nome}}">
+                                <span>
+                                    {{disciplina.nome}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+                        </div>
+                    </div>
+                </span>
+
+                <span class="button-ano">
+                    Ano
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for ano in choices_anos %}
+                            <label>
+                                <input type="checkbox" name="ano" value="{{ano.valor}}">
+                                <span>
+                                    {{ano.valor}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+
+                        </div>
+                    </div>
+                </span>
+
+                <span class="button-prova">
+                    Prova
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for prova in choices_provas %}
+                            <label>
+                                <input type="checkbox" name="prova" value="{{prova.nome}}">
+                                <span>
+                                    {{prova.nome}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+
+                        </div>
+                    </div>
+                </span>
+
+                <span class="button-banca">
+                    Banca
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for banca in choices_bancas %}
+                            <label>
+                                <input type="checkbox" name="banca" value="{{banca.nome}}">
+                                <span>
+                                    {{banca.nome}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+
+                        </div>
+                    </div>
+                </span>
+
+                <span class="button-estado">
+                    Estado
+                    <i class="fa-solid fa-caret-down"></i>
+                    <div class="dropdown-button">
+                        <input type="text" placeholder="Busca rápida">
+                        <div>
+                            {% for estado in choices_estados %}
+                            <label>
+                                <input type="checkbox" name="estado" value="{{estado.nome}}">
+                                <span>
+                                    {{estado.nome}}
+                                </span>
+                            </label>
+                            {% endfor %}
+
+                            <h4>
+                                Nenhum registro encontrado!
+                            </h4>
+
+                        </div>
+                    </div>
+                </span>
+
+            </div>
+            <div class="filtros_selecionados">
+                <h3>
+                    Filtrar por:
+                </h3>
+                <p> Os seus filtros aparecerão aqui </p>
+                <div class="filtro_palavra_chave">
+                    <i class="fa-regular fa-circle-xmark"></i>
+                    <p>
+                        Palavra Chave
+                    </p>
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+            <input type="submit" value="Filtrar Questões">
+
+        </form>
+        {% if questoes_zip %}
+        {% if request.session.rolagem_questao.id %}
+        <small id="rolagem" style="display: none;">{{request.session.rolagem_questao.id}}</small>
+        {% endif %}
+        <div class="questoes">
+            <span></span>
+            <h3>
+                {{qtd|plural_questoes}}
+            </h3>
+            <p style="font-weight: bold;">
+                {% if not request.GET.pag %}
+                    (Página atual: 1 de {{page_obj.paginator.num_pages}})
+                {% else %}
+                    (Página atual: {{request.GET.pag}} de {{page_obj.paginator.num_pages}})
+                {% endif %}
+            </p>
+            {% for questao, resposta in questoes_zip %}
+            <div id="questao_{{questao.codigo}}">
+                {% if questao.codigo in request.session.rolagem_questao.id %}
+                    {% include 'parciais/_messages.html' %}
+                {% endif %}
+                <div class="questao">
+                    <div>
+                        <p>
+                            {{questao.codigo}}
+                        </p>
+                        <p>
+                            <strong>
+                                Disciplina:
+                            </strong>
+                            {{questao.disciplina}}
+                        </p>
+                        <p>
+                            <strong>
+                                Ano:
+                            </strong>
+                            {{questao.ano}}
+                        </p>
+                        <p>
+                            <strong>
+                                Prova:
+                            </strong>
+                            {{questao.prova}}
+                        </p>
+                        <p>
+                            <strong>
+                                Banca:
+                            </strong>
+                            {{questao.banca}}
+                        </p>
+                        <p>
+                            <strong>
+                                Estado:
+                            </strong>
+                            {% if questao.estado %}
+                                {{questao.estado}}
+                            {% else %}
+                                Vazio
+                            {% endif %}
+                        </p>
+                        {% if resposta == 1 %}
+                        <p>
+                            <strong>
+                                Situação:
+                            </strong>
+                            Acertou
+                            <img src="{% static 'images/check.png' %}" alt="Questão - GMP Academy">
+                        </p>
+                        {% elif resposta == -1 %}
+                        <p>
+                            <strong>
+                                Situação:
+                            </strong>
+                            Errou
+                            <img src="{% static 'images/block.png' %}" alt="Questão - GMP Academy">
+                        </p>
+                        {% else %}
+                        <p>
+                            <strong>
+                                Situação:
+                            </strong>
+                            Pendente
+                            <img src="{% static 'images/pendente.png' %}" alt="Questão - GMP Academy">
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <p class="texto-questao">
+                        {{questao.texto|safe}}
+                    </p>
+
+                    <form action="{% url 'responder_questao' questao.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="alternativas">
+                            {% if questao.gabarito_alternativa != 'Correto' and questao.gabarito_alternativa != 'Errado' %}
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="A_{{questao.id}}">
+                                        <span>
+                                            A
+                                        </span>
+                                        <p>
+                                            {{questao.A}}
+                                        </p>
+                                        <input type="radio" name="alternativa" id="A_{{questao.id}}"
+                                            value="A_{{questao.id}}">
+                                    </label>
+                                </div>
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="B_{{questao.id}}">
+                                        <span>
+                                            B
+                                        </span>
+                                        <p>
+                                            {{questao.B}}
+                                        </p>
+                                        <input type="radio" name="alternativa" id="B_{{questao.id}}"
+                                            value="B_{{questao.id}}">
+                                    </label>
+                                </div>
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="C_{{questao.id}}">
+                                        <span>
+                                            C
+                                        </span>
+                                        <p>
+                                            {{questao.C}}
+                                        </p>
+                                        <input type="radio" name="alternativa" id="C_{{questao.id}}"
+                                            value="C_{{questao.id}}">
+                                    </label>
+                                </div>
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="D_{{questao.id}}">
+                                        <span>
+                                            D
+                                        </span>
+                                        <p>
+                                            {{questao.D}}
+                                        </p>
+                                        <input type="radio" name="alternativa" id="D_{{questao.id}}"
+                                            value="D_{{questao.id}}">
+                                    </label>
+                                </div>
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="E_{{questao.id}}">
+                                        <span>
+                                            E
+                                        </span>
+                                        <p>
+                                            {{questao.E}}
+                                        </p>
+                                        <input type="radio" name="alternativa" id="E_{{questao.id}}"
+                                            value="E_{{questao.id}}">
+                                    </label>
+                                </div>
+                            {% else %}
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="Correto_{{questao.id}}">
+                                        <span>
+                                            C
+                                        </span>
+                                        <p>
+                                            Correto
+                                        </p>
+                                        <input type="radio" name="alternativa" id="Correto_{{questao.id}}"
+                                            value="Correto_{{questao.id}}">
+                                    </label>
+                                </div>
+                                <div class="alternativa">
+                                    <i class="fa-solid fa-scissors"></i>
+                                    <label for="Errado_{{questao.id}}">
+                                        <span>
+                                            E
+                                        </span>
+                                        <p>
+                                            Errado
+                                        </p>
+                                        <input type="radio" name="alternativa" id="Errado_{{questao.id}}"
+                                            value="Errado_{{questao.id}}">
+                                    </label>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="gabarito">
+                            <input type="submit" value="Responder" class="desabilitado">
+
+                            {% if resposta %}
+                            {% if resposta == 1 %}
+                            <p class="acertou">
+                                Parabéns! Você acertou!
+                            </p>
+                            {% elif resposta == -1 %}
+                            <p class="errou">
+                                Você errou! Resposta: <strong>{{questao.gabarito_alternativa}}</strong>
+                            </p>
+                            {% endif %}
+
+                            {% else %}
+                            {% if sucesso == 1 %}
+                            <p class="acertou">
+                                Parabéns! Você acertou!
+                            </p>
+                            {% elif sucesso == -1 %}
+                            <p class="errou">
+                                Você errou! Resposta: <strong>{{questao.gabarito_alternativa}}</strong>
+                            </p>
+                            {% endif %}
+                            {% endif %}
+
+                        </div>
+                    </form>
+                    <a href="{% url 'redirecionamento_aulas' questao.disciplina %}">
+                        Assistir Aulas
+                    </a>
+                    {% if resposta %}
+                    <a href="{% url 'refazer_questao_2' questao.id %}">
+                        Refazer Questão
+                    </a>
+                    {% elif sucesso == 1 or sucesso == -1 %}
+                    <a href="{% url 'refazer_questao_2' questao.id %}">
+                        Refazer Questão
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'questao' questao.codigo %}">
+                        Ver Questão
+                    </a>
+
+                    <div class="aba-comunidade">
+                        <a href="{% url 'questao' questao.codigo %}">
+                            Comentários ({{questao.id|len_comentarios}})
+                        </a>
+                        <a href="{% url 'questao' questao.codigo %}">
+                            Dúvidas ({{questao.id|len_duvidas}})
+                        </a>
+                        <a href="{% url 'questao' questao.codigo %}">
+                            Dúvidas ao Professor ({{questao.id|len_duvidas_professor}})
+                        </a>
+                    </div>
+
+                </div>
+                <span></span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% include 'parciais/_pagination.html' %}
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/questoes.js' %}"></script>
+<script>
+    setTimeout(function () {
+        try {
+            const small = document.querySelector('#rolagem');
+            const to = document.querySelector(small.innerHTML).offsetTop;
+            scroll({
+                top: to - 200,
+                behavior: 'smooth',
+            })
+        } catch {
+
+        }
+    }, 0.0000001)
+</script>
+{% endblock %}

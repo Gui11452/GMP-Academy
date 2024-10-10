@@ -1,0 +1,490 @@
+{% extends 'base_index.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+{% endblock %}
+{% block titulo %}
+GMP University
+{% endblock %}
+
+{% block container %}
+<div class="container-home">
+    <div>
+        <div class="home">
+            {% include 'parciais/_messages.html' %}
+            <h1>
+                A maior plataforma de concursos em ensino de informática e tecnologia do Brasil
+            </h1>
+            <p>
+                Desperte seu potencial sem limites e conquiste
+                seus sonhos no concurso, graças à preparação excepcional
+                oferecida pela GMP University!
+            </p>
+            <form action="{% url 'redirecionamento_questoes_form' %}" method="GET">
+                <div class="provas-ocultas">
+                    {% for prova in provas %}
+                    <p>{{prova}}</p>
+                    {% endfor %}
+                </div>
+                <input type="search" id="search" name="search" placeholder='Questões: "{{ultima_prova.nome}}"'>
+                <div class="form-dropdown"></div>
+                <input type="submit" value="Pesquisar">
+            </form>
+
+        </div>
+        <div class="home-plano">
+            <img src="{% static 'images/questoes.png' %}" alt="GMP University - Planos">
+            <h2>
+                Planos a partir de <br>
+                <span>
+                    {{primeiro_plano.preco|formata_preco_mensal}}
+                </span>
+                /mês
+            </h2>
+            <a href=".container-planos">
+                Aproveite Já
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container-topicos">
+    <div>
+        <h2>
+            Como o <span>
+                GMP University
+            </span> vai te ajudar?
+        </h2>
+        <div class="topicos">
+            <div class="topico">
+                <h3>
+                    Muitas Questões
+                </h3>
+                <p>
+                    Maximize seu sucesso nos concursos! A GMP University tem uma
+                    vasta gama de questões e gabaritos. Treine eficientemente,
+                    identifique pontos fracos e alcance a excelência. O caminho para a
+                    aprovação começa aqui!
+                </p>
+                <a href=".container-planos">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+            <div class="topico">
+                <h3>
+                    Filtros Inteligentes
+                </h3>
+                <p>
+                    Otimize seu estudo com nosso site de questões para concursos.
+                    Filtros inteligentes personalizam sua prática, focando em áreas-chave.
+                    Eficiência, precisão e sucesso garantidos em cada teste!
+                </p>
+                <a href=".container-planos">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+            <div class="topico">
+                <h3>
+                    Organização de Tempo
+                </h3>
+                <p>
+                    Economize tempo, estude com eficácia! Nosso site de questões para concursos
+                    oferece organização perfeita, permitindo um planejamento preciso para
+                    maximizar seus estudos e alcançar o sucesso desejado.
+                </p>
+                <a href=".container-planos">
+                    Comece a Estudar Agora
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-planos">
+    <div>
+        <h2>
+            Toda a <span>
+                aprovação
+            </span> começa com um <span>
+                plano!
+            </span>
+        </h2>
+        <div class="planos">
+            <div class="plano">
+                <h3>
+                    Plano Gratuito
+                </h3>
+                <p>
+                    Tenha um gostinho de como funciosa o nosso sistema!
+                </p>
+                <small>
+                    De <span>
+                        R$ 00
+                    </span>
+                    por até
+                </small>
+                <h4>
+                    R$ 00,00
+                </h4>
+                {% if not pedido.plano_ativo and not request.user.is_authenticated %}
+                    <a href="{% url 'registro' %}">
+                        Cadastre-se Agora
+                    </a>
+                {% elif not pedido.plano_ativo and request.user.is_authenticated %}
+                    <a href="{% url 'perfil' %}" style="background: black">
+                        Seu Plano Atual
+                    </a>
+                {% else %}
+                    <a href="{% url 'perfil' %}">
+                        Atualizar
+                    </a>
+                {% endif %}
+
+                <div>
+                    <img src="{% static 'images/check.png' %}" alt="GMP University - Planos">
+                    <p>
+                        10 questões grátis
+                    </p>
+                </div>
+                <div>
+                    <img src="{% static 'images/check.png' %}" alt="GMP University - Planos">
+                    <p>
+                        1 aula gratuita
+                    </p>
+                </div>
+                <div>
+                    <img src="{% static 'images/check.png' %}" alt="GMP University - Planos">
+                    <p>
+                        Acesso a Métricas Avançadas
+                    </p>
+                </div>
+            </div>
+            {% for plano, topicos in plano_topicos %}
+            <div class="plano">
+                <h3>
+                    {{plano.nome}}
+                </h3>
+                <p>
+                    Sistema de questões para você praticar sem limites
+                </p>
+                <small>
+                    De <span>
+                        {{plano.preco|formata_preco_cheio}}
+                    </span>
+                    por até
+                    <strong>
+                        12x de
+                    </strong>
+                </small>
+                <h4>
+                    {{plano.preco|formata_preco_mensal}}
+                </h4>
+                {% if not pedido.plano_ativo %}
+                <a href="{% url 'escolher_plano' 'basico' %}">
+                    Assine Agora
+                </a>
+                {% elif pedido.plano == plano.tipo %}
+                <a href="{% url 'perfil' %}" style="background: black">
+                    Seu Plano Atual
+                </a>
+                {% else %}
+                <a href="{% url 'atualizar_assinatura' %}">
+                    Atualizar
+                </a>
+                {% endif %}
+
+                {% for topico in topicos %}
+                <div>
+                    <img src="{% static 'images/check.png' %}" alt="GMP University - Planos">
+                    <p>
+                        {{topico.nome}}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container-noticias">
+    <div>
+        <h2>
+            Acompanhe as <span>
+                últimas notícias
+            </span> e atualizações sobre concursos
+        </h2>
+        <div class="noticias">
+            {% if posts %}
+            {% if post_um %}
+            {% if post_um.foto %}
+            <a href="{% url 'post' post_um.slug %}" class="noticia"
+                style="background: url('{{post_um.foto.url}}'); background-size: cover;">
+                {% else %}
+                <a href="{% url 'post' post_um.slug %}" class="noticia"
+                    style="background: url('static/images/fundo2.jpg'); background-size: cover;">
+                    {% endif %}
+                    <div>
+                        <h2>
+                            {{post_um.titulo}}
+                        </h2>
+                        <small>
+                            <i class="fa-solid fa-clock"></i>
+                            {{post_um.data_publicacao|date:"d/m/Y H:i"}}
+                        </small>
+                    </div>
+                </a>
+                {% endif %}
+
+                {% if post_dois %}
+                {% if post_dois.foto %}
+                <a href="{% url 'post' post_dois.slug %}" class="noticia"
+                    style="background: url('{{post_dois.foto.url}}'); background-size: cover;">
+                    {% else %}
+                    <a href="{% url 'post' post_dois.slug %}" class="noticia"
+                        style="background: url('static/images/fundo2.jpg'); background-size: cover;">
+                        {% endif %}
+                        <div>
+                            <h2>
+                                {{post_dois.titulo}}
+                            </h2>
+                            <small>
+                                <i class="fa-solid fa-clock"></i>
+                                {{post_dois.data_publicacao|date:"d/m/Y H:i"}}
+                            </small>
+                        </div>
+                    </a>
+                    {% endif %}
+
+                    {% if post_tres %}
+                    {% if post_tres.foto %}
+                    <a href="{% url 'post' post_tres.slug %}" class="noticia"
+                        style="background: url('{{post_tres.foto.url}}'); background-size: cover;">
+                        {% else %}
+                        <a href="{% url 'post' post_tres.slug %}" class="noticia"
+                            style="background: url('static/images/fundo2.jpg'); background-size: cover;">
+                            {% endif %}
+                            <div>
+                                <h2>
+                                    {{post_tres.titulo}}
+                                </h2>
+                                <small>
+                                    <i class="fa-solid fa-clock"></i>
+                                    {{post_tres.data_publicacao|date:"d/m/Y H:i"}}
+                                </small>
+                            </div>
+                        </a>
+                        {% endif %}
+
+                        {% if post_quatro %}
+                        {% if post_quatro.foto %}
+                        <a href="{% url 'post' post_quatro.slug %}" class="noticia"
+                            style="background: url('{{post_quatro.foto.url}}'); background-size: cover;">
+                            {% else %}
+                            <a href="{% url 'post' post_quatro.slug %}" class="noticia"
+                                style="background: url('static/images/fundo2.jpg'); background-size: cover;">
+                                {% endif %}
+                                <div>
+                                    <h2>
+                                        {{post_quatro.titulo}}
+                                    </h2>
+                                    <small>
+                                        <i class="fa-solid fa-clock"></i>
+                                        {{post_quatro.data_publicacao|date:"d/m/Y H:i"}}
+                                    </small>
+                                </div>
+                            </a>
+                            {% endif %}
+
+                            {% else %}
+                            <a href="" class="noticia"
+                                style="background: url('static/images/fundo2.jpg'); background-size: cover;">
+                                <div>
+                                    <h2>
+                                        Sem notícias no momento!
+                                    </h2>
+                                </div>
+                            </a>
+                            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+<div class="container-rodape">
+    <div>
+        <div class="rodape">
+            <a href="{% url 'home' %}" class="logo">
+                <img src='{% static "images/logo.png" %}' alt="GMP University">
+                GMP University
+            </a>
+            <div>
+                <p>
+                    Prepare-se para concursos com nossa plataforma! Questões atualizadas,
+                    simulados e conteúdo completo. O caminho para a aprovação começa aqui.
+                    Acesse agora e turbine seus estudos!
+                </p>
+                <ul>
+                    <li>
+                        <h2>
+                            Menu
+                        </h2>
+                    </li>
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'questoes' %}">
+                            Questões
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'aulas' %}">
+                            Concursos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'ultima_noticia' %}">
+                            Notícias
+                        </a>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <h2>
+                            Contatos
+                        </h2>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                            <i class="fa-brands fa-instagram"></i>
+                            @instagram
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                            <i class="fa-brands fa-facebook"></i>
+                            facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:contato@brasilsolucoes.net">
+                            <i class="fa-solid fa-envelope"></i>
+                            email@gmail.com
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/company/sistemasbrasilsolucoes">
+                            <i class="fa-brands fa-linkedin"></i>
+                            linkedin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="rodape-imagens">
+            <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                <img src="{% static 'images/facebook.webp' %}" alt="Facebook - Brasil Soluções">
+            </a>
+            <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                <img src="{% static 'images/instagram.webp' %}" alt="Instagram - Brasil Soluções">
+            </a>
+        </div>
+        <div class="rodape-copyright">
+            <div>
+                <p>
+                    Copyright © 2024 GMP University. Todos os direitos reservados.
+                </p>
+                <p>
+                    Desenvolvido por <a href="https://ggaprogramer.com.br"> ggaprogramer.com.br </a>
+                </p>
+            </div>
+            <!-- <div>
+                <p>
+                    <a href="">GMP University</a>,
+                    inscrita no CNPJ sob no 00.000.000/0000-00
+                </p>
+            </div> -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const inputSearch = document.querySelector('#search');
+    const formDropdownSpan = document.querySelectorAll('.form-dropdown span');
+    const provas = document.querySelectorAll('.provas-ocultas p');
+    let tiposProva = [];
+    for (let prova of provas) {
+        tiposProva.push(`Questões: "${prova.innerHTML}"`);
+    }
+
+    let count = 0;
+    const searchIntervalo = setInterval(function () {
+        if (count == tiposProva.length) {
+            count = 0;
+        }
+
+        inputSearch.setAttribute('placeholder', tiposProva[count]);
+        count++;
+
+    }, 2000);
+
+    const formDropdown = document.querySelector('.form-dropdown');
+
+    document.addEventListener('input', e => {
+
+        const el = e.target;
+
+        if (el == inputSearch) {
+            formDropdown.innerHTML = '';
+            for (let i = 0; i < tiposProva.length; i++) {
+                let palavraTemporaria = tiposProva[i].toLowerCase().replace('õ', 'o').replace('ú', 'u');
+                let palavraSearchTemporaria = inputSearch.value.toLowerCase().replace('õ', 'o').replace('ú', 'u');
+                if (!inputSearch.value) {
+                    formDropdown.innerHTML = '';
+                }
+                else if (palavraTemporaria.indexOf(palavraSearchTemporaria) != -1) {
+                    const span = document.createElement('span');
+                    span.classList.add('span-formdropdown');
+                    span.innerHTML = tiposProva[i];
+                    formDropdown.appendChild(span);
+                }
+            }
+
+        }
+
+    });
+
+    const homePlano = document.querySelector('.home-plano a');
+    const topicoA = document.querySelectorAll('.topico a');
+    const [topicoA1, topicoA2, topicoA3] = topicoA;
+
+    document.addEventListener('click', e => {
+
+        const el = e.target;
+
+        if (el == homePlano || el == topicoA1 || el == topicoA2 || el == topicoA3) {
+            e.preventDefault();
+            const href = el.getAttribute('href');
+            const top = document.querySelector(href).offsetTop;
+            scroll({
+                'top': top - 80,
+                'behavior': "smooth",
+            })
+        }
+
+        if (el.classList.contains('span-formdropdown')) {
+            inputSearch.value = el.innerHTML;
+            formDropdown.innerHTML = '';
+        }
+
+    });
+</script>
+{% endblock %}

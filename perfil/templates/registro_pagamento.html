@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+<style>
+    .registro>span {
+        margin: 1rem 0 !important;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    #form-confirmacao>div,
+    #form-confirmacao label {
+        display: flex;
+        gap: 1rem;
+    }
+</style>
+{% endblock %}
+{% block titulo %}
+Registro Pagamento - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-registro">
+    <div>
+        <div class="registro">
+            {% if not validador %}
+            <h1>
+                <i class="fa-solid fa-credit-card"></i>
+                Antes de realizar o pagamento, você precisa estar logado!
+            </h1>
+            {% include 'parciais/_messages.html' %}
+            <h2>
+                Não tem uma conta? Registre-se
+            </h2>
+            <small>
+                A senha tem que ter no mínimo 8 caracteres!
+            </small>
+            <small>
+                O usuário tem que ter no mínimo 4 caracteres!
+            </small>
+            <small>
+                As senhas precisam ser iguais!
+            </small>
+            <form action="{% url 'registro_pagamento' 'registro' %}" enctype="multipart/form-data" id="form-registro" method="POST">
+                {% csrf_token %}
+
+                <label for="name">Nome completo:</label>
+                <input type="text" name="name" id="name" value="{{request.POST.name}}">
+                <small class="name-errors"></small>
+
+                <label for="user">Usuário:</label>
+                <input type="text" name="user" id="user" value="{{request.POST.user}}">
+                <small class="user-errors"></small>
+
+                <label for="email-registro">E-mail:</label>
+                <input type="email" name="email" id="email-registro" value="{{request.POST.email}}">
+                <small class="email-errors"></small>
+
+                <label for="senha1">Senha:</label>
+                <input type="password" name="senha1" id="senha1">
+                <small class="senha1-errors"></small>
+
+                <label for="senha2">Repetir senha:</label>
+                <input type="password" name="senha2" id="senha2">
+                <small class="senha2-errors"></small>
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+
+                <input type="submit" class="submit submit-registro" value="Registrar-se">
+                <span class="loader loader-registro"></span>
+            </form>
+            <span></span>
+            <h2>
+                Tem uma conta? Faça login
+            </h2>
+            <form action="{% url 'registro_pagamento' 'login' %}" id="form-login" method="POST">
+                {% csrf_token %}
+
+                <label for="email-login">E-mail:</label>
+                <input type="email" name="email" id="email-login" value="{{request.POST.email}}" required>
+                <small class="email-errors"></small>
+
+                <label for="senha">Senha:</label>
+                <input type="password" name="senha" id="senha" required>
+                <small class="senha-errors"></small>
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+
+                <input type="submit" class="submit submit-login" value="Login">
+                <span class="loader loader-login"></span>
+            </form>
+            {% else %}
+            <h2>
+                {{request.session.dados.username}}, confirme o seu e-mail abaixo
+            </h2>
+            {% include 'parciais/_messages.html' %}
+            <form action="{% url 'registro_pagamento' 'registro' %}" id="form-confirmacao" method="POST">
+                {% csrf_token %}
+
+                <label for="codigo">Código:</label>
+                <input type="text" name="codigo" id="codigo" value="{{request.POST.codigo}}">
+                <h5>
+                    Gerar outro código (Deixe em branco se não quiser)
+                </h5>
+                <div>
+                    <label>
+                        Sim
+                        <input type="radio" name="gerar_outro_codigo" value="sim">
+                    </label>
+                    /
+                    <label>
+                        Não
+                        <input type="radio" name="gerar_outro_codigo" value="nao">
+                    </label>
+                </div>
+
+                <input type="submit" id="submit" class="submit-confirmacao" value="Confirmar Conta">
+                <span class="loader loader-confirmacao"></span>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const formLogin = document.querySelector('#form-login');
+    const formConfirmacao = document.querySelector('#form-confirmacao');
+    const loaderLogin = document.querySelector('.loader-login');
+    const loaderConfirmacao = document.querySelector('.loader-confirmacao');
+    const buttonSubmitConfirmacao = document.querySelector('.submit-confirmacao');
+    const buttonSubmitLogin = document.querySelector('.submit-login');
+    formLogin.addEventListener('submit', e => {
+        buttonSubmitLogin.style.display = 'none';
+        loaderLogin.style.display = 'inline-block';
+    });
+    formConfirmacao.addEventListener('submit', e => {
+        buttonSubmitConfirmacao.style.display = 'none';
+        loaderConfirmacao.style.display = 'inline-block';
+    });
+</script>
+<script src="{% static 'js/registro_pagamento.js' %}"></script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

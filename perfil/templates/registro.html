@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/registro.css' %}">
+{% endblock %}
+{% block titulo %}
+Registro - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-registro">
+    <div>
+        <div class="registro">
+            <h1>
+                <i class="fa-solid fa-user"></i>
+                Registro
+            </h1>
+            <small>
+                A senha tem que ter no mínimo 8 caracteres!
+            </small>
+            <small>
+                O usuário tem que ter no mínimo 4 caracteres!
+            </small>
+            <small>
+                As senhas precisam ser iguais!
+            </small>
+            <form action="{% url 'registro' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+
+                <label for="name">Nome completo:</label>
+                <input type="text" name="name" id="name" value="{{request.POST.name}}">
+                <small class="name-errors"></small>
+
+                <label for="user">Usuário:</label>
+                <input type="text" name="user" id="user" value="{{request.POST.user}}">
+                <small class="user-errors"></small>
+
+                <label for="email">E-mail:</label>
+                <input type="email" name="email" id="email" value="{{request.POST.email}}">
+                <small class="email-errors"></small>
+
+                <label for="foto">Foto de perfil (opcional):</label>
+                <input type="file" name="foto" id="foto">
+
+                <label for="senha1">Senha:</label>
+                <input type="password" name="senha1" id="senha1">
+                <small class="senha1-errors"></small>
+
+                <label for="senha2">Repetir senha:</label>
+                <input type="password" name="senha2" id="senha2">
+                <small class="senha2-errors"></small>
+
+                <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+
+                <input type="submit" id="submit" value="Registrar-se">
+                <span class="loader"></span>
+            </form>
+            <span></span>
+            <a href="{% url 'login' %}">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Tem uma conta? Faça login
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/registro.js' %}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

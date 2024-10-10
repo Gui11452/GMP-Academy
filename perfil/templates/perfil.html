@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/perfil.css' %}">
+{% endblock %}
+{% block titulo %}
+Perfil - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-perfil">
+    <div>
+        <div class="perfil">
+            <h1>
+                <i class="fa-solid fa-user"></i>
+                Olá {{request.user}}
+            </h1>
+            {% include 'parciais/_messages.html' %}
+            {% if perfil.foto %}
+            <img src="{{ perfil.foto.url }}" alt="Foto Perfil - GMP Academy">
+            {% else %}
+            <img src="{% static 'images/anonimo.png' %}" alt="Foto Perfil - GMP Academy">
+            {% endif %}
+            <p>
+                Nome:
+                <strong>
+                    {{request.user.first_name}}
+                </strong>
+            </p>
+            <p>
+                Usuário:
+                <strong>
+                    {{request.user}}
+                </strong>
+            </p>
+            <p>
+                E-mail:
+                <strong>
+                    {{request.user.email}}
+                </strong>
+            </p>
+            <p>
+                Verificação do E-mail:
+                {% if perfil.verificacao_email %}
+                <img src="{% static 'images/check.png' %}" alt="Check - GMP Academy">
+                {% else %}
+                <img src="{% static 'images/block.png' %}" alt="Block - GMP Academy">
+                {% endif %}
+            </p>
+            <p>
+                Plano ativo:
+                {% if pedido.plano_ativo %}
+                {{pedido.plano|formata_plano2}}
+                <img src="{% static 'images/check.png' %}" alt="Check - GMP Academy">
+                {% else %}
+                <img src="{% static 'images/block.png' %}" alt="Block - GMP Academy">
+                {% endif %}
+            </p>
+
+            {% if pedido.plano_ativo %}
+            <p>
+                Preço Mensal:
+                <strong>
+                    {{pedido.preco_pedido|formata_preco_mensal}}
+                </strong>
+            </p>
+            {% endif %}
+
+            {% if not perfil.verificacao_email %}
+            <a href="{% url 'pedir_confirmacao_email' %}">
+                Confirmar E-mail
+            </a>
+            {% endif %}
+            {% if not pedido.plano_ativo and pedido.link_pagamento and pedido.link_pagamento != 'vazio' %}
+            <a href="{{pedido.link_pagamento}}">
+                Realizar o pagamento
+            </a>
+            <small>
+                Você tem um link ativo. OBS: link tem validade de 1 dia. Se o link parar de funcionar,
+                clique no botão abaixo e tente realizar o pagamento novamente
+                para gerar um novo link.
+            </small>
+            {% endif %}
+            {% if not pedido.plano_ativo %}
+            <a href="{% url 'payment' %}">
+                Gerar outro link
+            </a>
+            {% endif %}
+            <a href="{% url 'alterar_dados' %}">
+                Alterar Dados
+            </a>
+
+            {% if pedido.plano_ativo %}
+            <a href="{% url 'atualizar_assinatura' %}">
+                Atualizar Assinatura
+            </a>
+            {% endif %}
+
+            <form action="{% url 'logout' %}" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="Sair">
+            </form>
+
+            <div class="metricas">
+                <h2>
+                    <img src="{% static 'images/grafico.png' %}" alt="Gráfico - GMP Academy">
+                    Métricas Questões
+                </h2>
+                <p>
+                    Quantidade de questões feitas:
+                    <strong>
+                        {{metricas_gerais.numero_questoes_feitas}}
+                    </strong>
+                    de {{metricas_gerais.numero_questoes}}
+                    <strong>
+                        ({{metricas_gerais.porcentagem_geral}}%)
+                    </strong>
+                </p>
+                <p>
+                    Acertos:
+                    <strong>
+                        {{metricas_gerais.acertos}}
+                    </strong>
+                </p>
+                <p>
+                    Erros:
+                    <strong>
+                        {{metricas_gerais.erros}}
+                    </strong>
+                </p>
+                <p>
+                    Aproveitamento:
+                    <strong>
+                        {{metricas_gerais.aproveitamento}}%
+                    </strong>
+                    de acertos em relação a quantidade de questões feitas
+                </p>
+
+                <h2>
+                    <img src="{% static 'images/grafico.png' %}" alt="Gráfico - GMP Academy">
+                    Métricas por Disciplina
+                </h2>
+
+                {% include 'parciais/_messages.html' %}
+                <form method="POST" action="{% url 'perfil' %}" class="form-filtro">
+                    {% csrf_token %}
+                    <div>
+                        <span class="button-disciplina">
+                            Disciplina
+                            <i class="fa-solid fa-caret-down"></i>
+                            <div class="dropdown-button">
+                                <input type="text" placeholder="Busca rápida">
+                                <div>
+                                    {% for disciplina in choices_disciplinas %}
+                                    <label>
+                                        <input type="radio" name="disciplina" value="{{disciplina.nome}}">
+                                        <span>
+                                            {{disciplina.nome}}
+                                        </span>
+                                    </label>
+                                    {% endfor %}
+
+                                    <h4>
+                                        Nenhum registro encontrado!
+                                    </h4>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="filtros_selecionados">
+                        <h3>
+                            Filtrar por:
+                        </h3>
+                        <p> Os seus filtros aparecerão aqui </p>
+                    </div>
+                    <input type="submit" value="Ver Métrica da Disciplina">
+
+                </form>
+                {% if request.method == 'POST' %}
+                <div class="metricas-disciplina">
+                    <h2>
+                        Disciplina: {{metricas_disciplinas.nome_disciplina}}
+                    </h2>
+                    <p>
+                        Quantidade de questões feitas:
+                        <strong>
+                            {{metricas_disciplinas.numero_questoes_feitas}}
+                        </strong>
+                        de {{metricas_disciplinas.numero_questoes_disciplina}}
+                        <strong>
+                            ({{metricas_disciplinas.numero_questoes_porcentagem}}%)
+                        </strong>
+                    </p>
+                    <p>
+                        Acertos:
+                        <strong>
+                            {{metricas_disciplinas.acertos}}
+                        </strong>
+                    </p>
+                    <p>
+                        Erros:
+                        <strong>
+                            {{metricas_disciplinas.erros}}
+                        </strong>
+                    </p>
+                    <p>
+                        Aproveitamento:
+                        <strong>
+                            {{metricas_disciplinas.aproveitamento}}%
+                        </strong>
+                        de acertos em relação a quantidade de questões feitas
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/perfil.js' %}"></script>
+{% endblock %}

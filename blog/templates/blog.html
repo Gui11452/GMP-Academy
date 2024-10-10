@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog.css' %}">
+{% endblock %}
+{% block titulo %}
+    Blog - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+    {% if posts %}
+        {% if post_um.foto %}
+            <div class="container-blog" style="background: url('{{post_um.foto.url}}') center; background-size: cover;">
+                <div>
+                    <div>
+                        <div class="post">
+                            <h2>
+                                {{post_um.titulo|formata_slug_string}}
+                            </h2>
+                            <small>
+                                by EZCAR | {{post_um.categoria}} | {{post_um.data_publicacao|date:"d/m/Y H:i"}}
+                            </small>
+                            <p>
+                                {{post_um.descricao}}
+                            </p>
+                            <a href="{% url 'post' post_um.titulo %}">
+                                Leia mais
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="container-blog">
+                <div>
+                    <div>
+                        <div class="post">
+                            <h2>
+                                {{post_um.titulo|formata_slug_string}}
+                            </h2>
+                            <small>
+                                by EZCAR | {{post_um.categoria}} | {{post_um.data_publicacao|date:"d/m/Y H:i"}}
+                            </small>
+                            <p>
+                                {{post_um.descricao}}
+                            </p>
+                            <a href="{% url 'post' post_um.titulo %}">
+                                Leia mais
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="container-primeiras-noticias">
+            <div>
+                {% if post_dois %}
+                    {% if post_dois.foto %}
+                        <a href="{% url 'post' post_dois.titulo %}" class="noticia" style="background: url('{{post_dois.foto.url}}'); background-size: cover;">
+                            <div>
+                                <span> {{post_dois.categoria|upper}} </span>
+                                <h1> {{post_dois.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'post' post_dois.titulo %}" class="noticia">
+                            <div>
+                                <span> {{post_dois.categoria|upper}} </span>
+                                <h1> {{post_dois.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                    
+                {% if post_tres %}
+                    {% if post_tres.foto %}
+                        <a href="{% url 'post' post_tres.titulo %}" class="noticia" style="background: url('{{post_tres.foto.url}}'); background-size: cover;">
+                            <div>
+                                <span> {{post_tres.categoria|upper}} </span>
+                                <h1> {{post_tres.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'post' post_tres.titulo %}" class="noticia">
+                            <div>
+                                <span> {{post_tres.categoria|upper}} </span>
+                                <h1> {{post_tres.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                    
+                {% if post_quatro %}
+                    {% if post_quatro.foto %}
+                        <a href="{% url 'post' post_quatro.titulo %}" class="noticia" style="background: url('{{post_quatro.foto.url}}'); background-size: cover;">
+                            <div>
+                                <span> {{post_quatro.categoria|upper}} </span>
+                                <h1> {{post_quatro.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'post' post_quatro.titulo %}" class="noticia">
+                            <div>
+                                <span> {{post_quatro.categoria|upper}} </span>
+                                <h1> {{post_quatro.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endif %}
+                    
+                {% if post_cinco %}
+                    {% if post_cinco.foto %}
+                        <a href="{% url 'post' post_cinco.titulo %}" class="noticia" style="background: url('{{post_cinco.foto.url}}'); background-size: cover;">
+                            <div>
+                                <span> {{post_cinco.categoria|upper}} </span>
+                                <h1> {{post_cinco.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'post' post_cinco.titulo %}" class="noticia">
+                            <div>
+                                <span> {{post_cinco.categoria|upper}} </span>
+                                <h1> {{post_cinco.titulo|formata_slug_string}}
+                                </h1>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="container-segundas-noticias">
+            <div>
+                {% if post_seis %}
+                    {% if post_seis.foto %}
+                        <div class="coluna1">
+                            <a href="{% url 'post' post_seis.titulo %}" 
+                            class="coluna1-noticia" style="background: url('{{post_seis.foto.url}}'); background-size: cover;">
+                                <span> {{post_seis.categoria|upper}} </span>
+                            </a>
+                            
+                            <h1> {{post_seis.titulo|formata_slug_string}}
+                            </h1>
+                            <p>
+                                {{post_seis.descricao}}                  
+                            </p>
+                            <small>
+                                POR
+                                <span> ADMIN </span>
+                            </small>
+                            <a href="{% url 'post' post_seis.titulo %}">
+                                LEIA MAIS
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="coluna1">
+                            <a href="{% url 'post' post_seis.titulo %}" 
+                            class="coluna1-noticia">
+                                <span> {{post_seis.categoria|upper}} </span>
+                            </a>
+                            
+                            <h1> {{post_seis.titulo|formata_slug_string}}
+                            </h1>
+                            <p>
+                                {{post_seis.descricao}}                  
+                            </p>
+                            <small>
+                                POR
+                                <span> ADMIN </span>
+                            </small>
+                            <a href="{% url 'post' post_seis.titulo %}">
+                                LEIA MAIS
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                
+                <div class="coluna2">
+                    {% if post_sete %}
+                        <div>
+                            <a href="{% url 'post' post_sete.titulo %}">
+                                {% if post_sete.foto %}
+                                    <img src="{{post_sete.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_sete.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+                    
+                    {% if post_oito %}
+                        <div>
+                            <a href="{% url 'post' post_oito.titulo %}">
+                                {% if post_oito.foto %}
+                                    <img src="{{post_oito.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_oito.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+
+                    {% if post_nove %}
+                        <div>
+                            <a href="{% url 'post' post_nove.titulo %}">
+                                {% if post_nove.foto %}
+                                    <img src="{{post_nove.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_nove.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="coluna2">
+                    {% if post_dez %}
+                        <div>
+                            <a href="{% url 'post' post_dez.titulo %}">
+                                {% if post_dez.foto %}
+                                    <img src="{{post_dez.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_dez.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+                    
+                    {% if post_onze %}
+                        <div>
+                            <a href="{% url 'post' post_onze.titulo %}">
+                                {% if post_onze.foto %}
+                                    <img src="{{post_onze.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_onze.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+
+                    {% if post_doze %}
+                        <div>
+                            <a href="{% url 'post' post_doze.titulo %}">
+                                {% if post_doze.foto %}
+                                    <img src="{{post_doze.foto.url}}" alt="">
+                                {% endif %}
+                            </a>
+                            <h1> 
+                                {{post_doze.titulo|formata_slug_string}}
+                            </h1>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="coluna3">
+                    <h1> Siga-nos </h1>
+                    <div>
+                        <a href="#">
+                            <img src="{% static 'images/facebook.webp' %}" alt="">
+                        </a>
+                        <a href="#">
+                            <img src="{% static 'images/instagram.webp' %}" alt="">
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    {% else %}  
+        <div class="container-blog" style="background: url('/static/images/fundo2.jpg') center; background-size: cover;">
+            <div>
+                <div>
+                    <div class="post">
+                        <h2>
+                            No momento, não há postagens disponíveis.
+                        </h2>
+                        <a href="{% url 'home' %}">
+                            Voltar para a página principal
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+    

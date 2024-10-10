@@ -1,0 +1,102 @@
+{% load static %}
+
+<div class="container-rodape">
+    <div>
+        <div class="rodape">
+            <a href="{% url 'home' %}" class="logo">
+                <img src='{% static "images/logo.png" %}' alt="GMP Academy">
+                GMP Academy
+            </a>
+            <div>
+                <p>
+                    Prepare-se para concursos com nossa plataforma! Questões atualizadas, 
+                    simulados e conteúdo completo. O caminho para a aprovação começa aqui. 
+                    Acesse agora e turbine seus estudos!
+                </p>
+                <ul>
+                    <li>
+                        <h2>
+                            Menu
+                        </h2>
+                    </li>
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'questoes' %}">
+                            Questões
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'aulas' %}">
+                            Aulas
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'ultima_noticia' %}">
+                            Notícias
+                        </a>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <h2>
+                            Contatos
+                        </h2>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                            <i class="fa-brands fa-instagram"></i>
+                            @instagram
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                            <i class="fa-brands fa-facebook"></i>
+                            facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:contato@brasilsolucoes.net">
+                            <i class="fa-solid fa-envelope"></i>
+                            email@gmail.com
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/company/sistemasbrasilsolucoes">
+                            <i class="fa-brands fa-linkedin"></i>
+                            linkedin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="rodape-imagens">
+            <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                <img src="{% static 'images/facebook.webp' %}" alt="Facebook - Brasil Soluções">
+            </a>
+            <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                <img src="{% static 'images/instagram.webp' %}" alt="Instagram - Brasil Soluções">
+            </a>
+        </div>
+        <div class="rodape-copyright">
+            <div>
+                <p>
+                    Copyright © 2024 GMP Academy. Todos os direitos reservados.
+                </p>
+                <p>
+                    Desenvolvido por <a href="https://ggaprogramer.com.br"> ggaprogramer.com.br </a>
+                </p>
+            </div>
+            <!-- <div>
+                <p>
+                    <a href="">GMP Academy</a>, 
+                    inscrita no CNPJ sob no 00.000.000/0000-00
+                </p>
+            </div> -->
+        </div>
+    </div>
+</div>

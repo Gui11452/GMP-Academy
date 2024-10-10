@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/payment.css' %}">
+{% endblock %}
+{% block titulo %}
+Atualizar Assinatura - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-payment">
+    <div>
+        <div class="payment">
+            <h1>
+                <i class="fa-solid fa-user"></i>
+                Olá {{request.user}}, escolha o plano que você deseja mudar
+            </h1>
+            <p>
+                Plano atual: <strong>{{pedido.plano|formata_plano2}}</strong>
+            </p>
+            <p>
+                Preço que você paga: <strong>{{pedido.preco_pedido|formata_preco_mensal}}</strong>
+            </p>
+            <form action="{% url 'atualizar_assinatura' %}" method="POST">
+                {% csrf_token %}
+                {% include 'parciais/_messages.html' %}
+                    <div style="margin: 1rem 0 1rem 0">
+                        {% for plano in planos %}
+                            {% if plano.tipo == 'basico' %}
+                                <label>
+                                    Básico ({{plano.preco|formata_preco_mensal}})
+                                    <input type="radio" name="plano" id="plano-basico" value="basico">
+                                </label>
+                                /
+                            {% elif plano.tipo == 'intermediario' %}
+                                <label>
+                                    Intermediário ({{plano.preco|formata_preco_mensal}})
+                                    <input type="radio" name="plano" id="plano-intermediario" value="intermediario">
+                                </label>
+                                /
+                            {% else %}
+                                <label>
+                                    Avançado ({{plano.preco|formata_preco_mensal}})
+                                    <input type="radio" name="plano" id="plano-avancado" value="avancado">
+                                </label>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                <p>
+                    Deseja suspender a sua assinatura? (Se sim, não precisa preencher o campo acima)
+                    <br>
+                    OBS: as mudanças serão feitas a partir da próxima cobrança
+                </p>
+                <div>
+                    <label>
+                        Sim
+                        <input type="radio" name="suspender" id="suspender" value="sim">
+                    </label>
+                    <label>
+                        Não
+                        <input type="radio" name="suspender" value="nao">
+                    </label>
+                </div>
+                <span class="loader"></span>
+                <input type="submit" id="submit" value="Atualizar assinatura">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    const loader = document.querySelector('.loader');
+    const buttonSubmit = document.querySelector('#submit');
+    document.addEventListener('submit', e => {
+        buttonSubmit.style.display = 'none';
+        loader.style.display = 'inline-block';
+
+    });
+
+</script>
+{% endblock %}

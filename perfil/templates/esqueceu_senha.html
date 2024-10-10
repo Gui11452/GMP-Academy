@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/esqueceu_senha.css' %}">
+{% endblock %}
+{% block titulo %}
+    Esqueceu Senha - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+    <div class="container-esqueceu_senha">
+        <div>
+            <div class="esqueceu_senha">
+                <h1>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Coloque o e-mail atrelado a sua conta abaixo
+                </h1>
+                {% include 'parciais/_messages.html' %}
+                {% if not validador %}
+                    <form action="{% url 'esqueceu_senha' %}" method="POST">
+                        {% csrf_token %}
+                        <label for="email">E-mail:</label>
+                        <input type="email" name="email" id="email" value="{{request.POST.email}}" required>
+                        <div class="g-recaptcha" data-sitekey="{{RECAPTCHA_FRONT}}"></div>
+                        <input type="submit" id="submit" value="Recuperar">
+                        <span class="loader"></span>
+                    </form>
+                    <span></span>
+                    <a href="{% url 'login' %}">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        Lembrou da senha? Faça login
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block scripts %}
+    <script>
+        const loader = document.querySelector('.loader');
+        const buttonSubmit = document.querySelector('#submit');
+        document.addEventListener('submit', e => {
+            buttonSubmit.style.display = 'none';
+            loader.style.display = 'inline-block';
+
+        });
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}

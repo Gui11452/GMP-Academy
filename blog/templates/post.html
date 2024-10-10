@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/post.css' %}">
+{% endblock %}
+{% block titulo %}
+    Post - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+    <div class="container-post">
+        <div>
+            <div>
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+                /
+                <a href="{% url 'blog' %}">
+                    Blog
+                </a>
+            </div>
+            <div class="post">
+                <h1>
+                    {{post.titulo}}
+                </h1>
+                <p>
+                    {{post.descricao}}
+                </p>
+                <small>
+                    by GMP Academy | {{post.categoria}} | {{post.data_publicacao|date:"d/m/Y H:i"}}
+                </small>
+                {% if post.foto %}
+                    <img src="{{post.foto.url}}" alt="{{post.titulo}} / {{post.descricao}} / {{post.categoria}}">
+                {% endif %}
+                {{post.texto|safe}}
+            </div>
+            <!-- <span></span>
+            <form action="" method="POST">
+                <h3>
+                    Comente agora no vídeo
+                </h3>
+                <textarea name="" id="" cols="30" rows="10" placeholder="Escreva algo..."></textarea>
+                <small></small>
+                <input type="submit" value="Enviar">
+                <h4>
+                    Sem comentários no momento
+                </h4>
+                <div class="comentario">
+                    <i class="fa-solid fa-user"></i>
+                    <div>
+                        <h4> User123 </h4>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Mollitia molestias maxime itaque reiciendis, amet laudantium 
+                            vero dolores.
+                        </p>
+                    </div>
+                </div>
+                <div class="comentario">
+                    <i class="fa-solid fa-user"></i>
+                    <div>
+                        <h4> User123 </h4>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Mollitia molestias maxime itaque reiciendis, amet laudantium 
+                            vero dolores.
+                        </p>
+                    </div>
+                </div>
+                                <div class="comentario">
+                    <i class="fa-solid fa-user"></i>
+                    <div>
+                        <h4> User123 </h4>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            Mollitia molestias maxime itaque reiciendis, amet laudantium 
+                            vero dolores.
+                        </p>
+                    </div>
+                </div>
+            </form> -->
+        </div>
+    </div>
+
+{% endblock %}
+    

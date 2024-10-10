@@ -1,0 +1,325 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/questao.css' %}">
+{% endblock %}
+{% block titulo %}
+Questão - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+<div class="container-questoes">
+    <div>
+        <h1>
+            <img src="{% static 'images/questoes.png' %}" alt="Questões - GMP Academy">
+            Questão
+        </h1>
+        <div class="questoes">
+            <div>
+                <form method="POST" action="{% url 'questao' questao.codigo %}" class="questao">
+                    {% csrf_token %}
+                    <div>
+                        <p>
+                            {{questao.codigo}}
+                        </p>
+                        <p>
+                            <strong>
+                                Disciplina:
+                            </strong>
+                            {{questao.disciplina}}
+                        </p>
+                        <p>
+                            <strong>
+                                Ano:
+                            </strong>
+                            {{questao.ano}}
+                        </p>
+                        <p>
+                            <strong>
+                                Prova:
+                            </strong>
+                            {{questao.prova}}
+                        </p>
+                        <p>
+                            <strong>
+                                Banca:
+                            </strong>
+                            {{questao.banca}}
+                        </p>
+                        <p>
+                            <strong>
+                                Estado:
+                            </strong>
+                            {% if questao.estado %}
+                                {{questao.estado}}
+                            {% else %}
+                                Vazio
+                            {% endif %}
+                        </p>
+                        <p>
+                            <strong>
+                                Situação:
+                            </strong>
+                            {% if resposta %}
+                            {% if resposta == 1 %}
+                            Acertou
+                            <img src="{% static 'images/check.png' %}" alt="Questão - GMP Academy">
+                            {% elif resposta == -1 %}
+                            Errou
+                            <img src="{% static 'images/block.png' %}" alt="Questão - GMP Academy">
+                            {% endif %}
+                            {% else %}
+                            Pendente
+                            <img src="{% static 'images/pendente.png' %}" alt="Questão - GMP Academy">
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <p class="texto-questao">
+                        {{questao.texto|safe}}
+                    </p>
+
+                    <div class="alternativas">
+                        {% include 'parciais/_messages.html' %}
+                        {% if questao.gabarito_alternativa != 'Correto' and questao.gabarito_alternativa != 'Errado' %}
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="A">
+                                <span>
+                                    A
+                                </span>
+                                <p>
+                                    {{questao.A}}
+                                </p>
+                                <input type="radio" name="alternativa" id="A" value="A">
+                            </label>
+                        </div>
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="B">
+                                <span>
+                                    B
+                                </span>
+                                <p>
+                                    {{questao.B}}
+                                </p>
+                                <input type="radio" name="alternativa" id="B" value="B">
+                            </label>
+                        </div>
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="C">
+                                <span>
+                                    C
+                                </span>
+                                <p>
+                                    {{questao.C}}
+                                </p>
+                                <input type="radio" name="alternativa" id="C" value="C">
+                            </label>
+                        </div>
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="D">
+                                <span>
+                                    D
+                                </span>
+                                <p>
+                                    {{questao.D}}
+                                </p>
+                                <input type="radio" name="alternativa" id="D" value="D">
+                            </label>
+                        </div>
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="E">
+                                <span>
+                                    E
+                                </span>
+                                <p>
+                                    {{questao.E}}
+                                </p>
+                                <input type="radio" name="alternativa" id="E" value="E">
+                            </label>
+                        </div>
+                        {% else %}
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="Correto">
+                                <span>
+                                    C
+                                </span>
+                                <p>
+                                    Correto
+                                </p>
+                                <input type="radio" name="alternativa" id="Correto" value="Correto">
+                            </label>
+                        </div>
+                        <div class="alternativa">
+                            <i class="fa-solid fa-scissors"></i>
+                            <label for="Errado">
+                                <span>
+                                    E
+                                </span>
+                                <p>
+                                    Errado
+                                </p>
+                                <input type="radio" name="alternativa" id="Errado" value="Errado">
+                            </label>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="gabarito">
+                        <input type="submit" value="Responder" class="desabilitado">
+
+                        {% if resposta %}
+                        {% if resposta == 1 %}
+                        <p class="acertou">
+                            Parabéns! Você acertou!
+                        </p>
+                        {% elif resposta == -1 %}
+                        <p class="errou">
+                            Você errou! Resposta: <strong>{{questao.gabarito_alternativa}}</strong>
+                        </p>
+                        {% endif %}
+
+                        {% else %}
+                        {% if sucesso == 1 %}
+                        <p class="acertou">
+                            Parabéns! Você acertou!
+                        </p>
+                        {% elif sucesso == -1 %}
+                        <p class="errou">
+                            Você errou! Resposta: <strong>{{questao.gabarito_alternativa}}</strong>
+                        </p>
+                        {% endif %}
+                        {% endif %}
+
+                    </div>
+                    <a href="{% url 'redirecionamento_aulas' questao.disciplina %}">
+                        Assistir Aulas
+                    </a>
+                    {% if resposta %}
+                    <a href="{% url 'refazer_questao' questao.id %}">
+                        Refazer Questão
+                    </a>
+                    {% elif sucesso == 1 or sucesso == -1 %}
+                    <a href="{% url 'refazer_questao' questao.id %}">
+                        Refazer Questão
+                    </a>
+                    {% endif %}
+                    <a href="{{link_anterior}}">
+                        Voltar
+                    </a>
+                </form>
+            </div>
+        </div>
+        <div class="aba-comunidade">
+            <p>
+                Comentários ({{questao.id|len_comentarios}})
+            </p>
+            <p>
+                Dúvidas ({{questao.id|len_duvidas}})
+            </p>
+            <p>
+                Reportar Dúvidas ao Professor ({{questao.id|len_duvidas_professor}})
+            </p>
+        </div>
+        <div class="comentarios desocultar">
+            <form action="{% url 'enviar_comentario' questao.id %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="comentario" placeholder="Deixe o seu comentário..." required>
+                <input type="submit" value="Enviar">
+            </form>
+            {% for comentario in comentarios %}
+            <div class="comentario">
+                <div>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <p>
+                        <strong>
+                            {{comentario.usuario.username}}:
+                        </strong>
+                        {{comentario.texto}}
+                    </p>
+                    <small>
+                        {{comentario.data|naturalday|title}}
+                    </small>
+                </div>
+            </div>
+            {% empty %}
+            <h3>
+                Não há comentários nesse vídeo
+            </h3>
+            {% endfor %}
+        </div>
+        <div class="duvidas">
+            <form action="{% url 'enviar_duvida' questao.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="duvida" placeholder="Faça a sua pergunta..." required>
+                <input type="file" name="duvida_imagem" style="color: black;">
+                <input type="submit" value="Enviar">
+            </form>
+            {% for duvida, resposta in duvidas_respostas %}
+            {% if duvida %}
+            <div class="duvida">
+                <div>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <p>
+                        <strong>
+                            {{duvida.usuario.username}}:
+                        </strong>
+                        {{duvida.texto}}
+                    </p>
+                    {% if duvida.arquivo %}
+                    <a href="{{duvida.arquivo.url}}" target="_blank">
+                        <i class="fa-solid fa-file"></i>
+                        Ver arquivo em anexo
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+            {% if resposta %}
+            <div class="resposta">
+                <div>
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <p>
+                        <strong>
+                            Suporte:
+                        </strong>
+                        {{resposta.texto}}
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+            {% empty %}
+            <h3>
+                Não há dúvidas nesse vídeo
+            </h3>
+            {% endfor %}
+        </div>
+        <div class="duvidas_professor">
+            <form action="{% url 'enviar_duvida_professor' questao.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="duvida_professor" placeholder="Reporte uma dúvida ao professor..." required>
+                <input type="file" name="duvida_imagem_professor" style="color: black;">
+                <input type="submit" value="Enviar">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/questao.js' %}"></script>
+{% endblock %}

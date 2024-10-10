@@ -1,0 +1,221 @@
+{% extends 'base_index.html' %}
+{% load static %}
+{% load filters %}
+
+{% block estilos %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/planos.css' %}">
+{% endblock %}
+{% block titulo %}
+    Planos - GMP Academy
+{% endblock %}
+
+{% block container %}
+
+    <div class="container-planos">
+        <div>
+            <h2>
+                Toda a <span>
+                    aprovação
+                </span> começa com um <span>
+                    plano!
+                </span>
+            </h2>
+            <div class="planos">
+                <div class="plano">
+                    <h3>
+                        Plano Gratuito
+                    </h3>
+                    <p>
+                        Tenha um gostinho de como funciosa o nosso sistema!
+                    </p>
+                    <small>
+                        De <span>
+                            R$ 00
+                        </span>
+                        por até
+                    </small>
+                    <h4>
+                        R$ 00,00
+                    </h4>
+                    {% if not pedido.plano_ativo %}
+                    <a href="{% url 'registro' %}">
+                        Cadastre-se Agora
+                    </a>
+                    {% elif not pedido %}
+                    <a href="{% url 'perfil' %}" style="background: black">
+                        Seu Plano Atual
+                    </a>
+                    {% else %}
+                    <a href="{% url 'perfil' %}">
+                        Atualizar
+                    </a>
+                    {% endif %}
+
+                    <div>
+                        <img src="{% static 'images/check.png' %}" alt="GMP Academy - Planos">
+                        <p>
+                            10 questões grátis
+                        </p>
+                    </div>
+                    <div>
+                        <img src="{% static 'images/check.png' %}" alt="GMP Academy - Planos">
+                        <p>
+                            1 aula gratuita
+                        </p>
+                    </div>
+                </div>
+                {% for plano, topicos in plano_topicos %}
+                    <div class="plano">
+                        <h3>
+                            {{plano.nome}}
+                        </h3>
+                        <p>
+                            Sistema de questões para você praticar sem limites
+                        </p>
+                        <small>
+                            De <span>
+                                {{plano.preco|formata_preco_cheio}}
+                            </span>
+                            por até
+                            <strong>
+                                12x de
+                            </strong>
+                        </small>
+                        <h4>
+                            {{plano.preco|formata_preco_mensal}}
+                        </h4>
+                        {% if not pedido.plano_ativo %}
+                            <a href="{% url 'escolher_plano' 'basico' %}">
+                                Assine Agora
+                            </a>
+                        {% elif pedido.plano == plano.tipo %}
+                            <a href="{% url 'perfil' %}" style="background: black">
+                                Seu Plano Atual
+                            </a>
+                        {% else %}
+                            <a href="{% url 'atualizar_assinatura' %}">
+                                Atualizar
+                            </a>
+                        {% endif %}
+
+                        {% for topico in topicos %}
+                        <div>
+                            <img src="{% static 'images/check.png' %}" alt="GMP Academy - Planos">
+                            <p>
+                                {{topico.nome}}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container-rodape">
+        <div>
+            <div class="rodape">
+                <a href="{% url 'home' %}" class="logo">
+                    <img src='{% static "images/logo.png" %}' alt="GMP Academy">
+                    GMP Academy
+                </a>
+                <div>
+                    <p>
+                        Prepare-se para concursos com nossa plataforma! Questões atualizadas,
+                        simulados e conteúdo completo. O caminho para a aprovação começa aqui.
+                        Acesse agora e turbine seus estudos!
+                    </p>
+                    <ul>
+                        <li>
+                            <h2>
+                                Menu
+                            </h2>
+                        </li>
+                        <li>
+                            <a href="{% url 'home' %}">
+                                Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'questoes' %}">
+                                Questões
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'aulas' %}">
+                                Concursos
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'ultima_noticia' %}">
+                                Notícias
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <h2>
+                                Contatos
+                            </h2>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                                <i class="fa-brands fa-instagram"></i>
+                                @instagram
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                                <i class="fa-brands fa-facebook"></i>
+                                facebook
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:contato@brasilsolucoes.net">
+                                <i class="fa-solid fa-envelope"></i>
+                                email@gmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/company/sistemasbrasilsolucoes">
+                                <i class="fa-brands fa-linkedin"></i>
+                                linkedin
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="rodape-imagens">
+                <a href="https://www.facebook.com/sistemasbrasilsolucoes/">
+                    <img src="{% static 'images/facebook.webp' %}" alt="Facebook - Brasil Soluções">
+                </a>
+                <a href="https://www.instagram.com/sistemasbrasilsolucoes/">
+                    <img src="{% static 'images/instagram.webp' %}" alt="Instagram - Brasil Soluções">
+                </a>
+            </div>
+            <div class="rodape-copyright">
+                <div>
+                    <p>
+                        Copyright © 2024 GMP Academy. Todos os direitos reservados.
+                    </p>
+                    <p>
+                        Desenvolvido por <a href="https://ggaprogramer.com.br"> ggaprogramer.com.br </a>
+                    </p>
+                </div>
+                <!-- <div>
+                    <p>
+                        <a href="">GMP Academy</a>,
+                        inscrita no CNPJ sob no 00.000.000/0000-00
+                    </p>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+</script>
+{% endblock %}
