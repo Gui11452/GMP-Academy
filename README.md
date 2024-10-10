@@ -1,4 +1,4 @@
-## Plataforma de Cursos
+## Plataforma de Questões
 
 - Área Administrativa
 - Cadastro de questões
